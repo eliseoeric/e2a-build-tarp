@@ -10,8 +10,8 @@ main() {
 }
 
 build_electron() {
-  yarn --cwd /app electron:build
-  yarn --cwd /app electron:build --windows
+  yarn --cwd /github/workspace electron:build
+  yarn --cwd /github/workspace electron:build --windows
 }
 
 zip_files() {

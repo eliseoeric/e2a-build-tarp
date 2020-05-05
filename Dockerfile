@@ -1,11 +1,8 @@
 # Container image that runs your code
-FROM node:alpine3.10
+FROM node:13.14
 
-RUN apk add zip
-
-RUN mkdir /app
-
-WORKDIR /app
+RUN apt-get update && \
+  apt-get install -y zip
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY script /script
