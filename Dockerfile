@@ -3,10 +3,6 @@ FROM node:alpine3.10
 
 RUN apk add zip
 
-RUN mkdir /app
-
-WORKDIR /app
-
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY script /script
 
