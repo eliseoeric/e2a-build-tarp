@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+ZIPS="mac-installer.zip windows-installer.zip windows-installer-portable.zip"
+DIST="dist_electron"
+
+main() {
+  build_electron
+  zip_files
+  move_to_new_location
+}
+
+build_electron() {
+  yarn --cwd /app electron:build
+  yarn --cwd /app electron:build --windows
+}
+
+zip_files() {
+  zip dist_electron/mac-installer.zip dist_electron/TARP-0.1.0.dmg
+  zip -r dist_electron/windows-installer.zip dist_electron/win-ia32-unpacked
+  zip -r dist_electron/windows-installer-portable.zip dist_electron/TARP\ 0.1.0.exe
+}
+
+main
