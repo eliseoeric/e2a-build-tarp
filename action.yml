@@ -1,11 +1,19 @@
 # action.yml
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Build E2A TARP'
+description: 'Deploy offline Electron version of E2A TARP'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  gh_token:  # id of input
+    description: 'GitHub token for the E2A user'
     required: true
-    default: 'World'
+    default: ''
+  gh_username:
+    description: 'GitHub username for the E2A user'
+    required: true
+    default: ''
+  gh_repo:
+    description: 'GitHub repo name'
+    required: true
+    default: 'E2A/e2a-cip'
 outputs:
   time: # id of output
     description: 'The time we greeted you'
@@ -13,4 +21,6 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.who-to-greet }}
+    - ${{ inputs.gh_username }}
+    - ${{ inputs.gh_token }}
+    - ${{ inputs.gh_repo }}
