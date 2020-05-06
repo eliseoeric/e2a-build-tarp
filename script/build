@@ -2,22 +2,40 @@
 
 ZIPS="mac-installer.zip windows-installer.zip windows-installer-portable.zip"
 DIST="dist_electron"
+WORKSPACE="/github/workspace"
+GH_USERNAME=$1
+GH_TOKEN=$2
+GH_REPO=$3
 
 main() {
-  build_electron
+  config_git
   zip_files
-  move_to_new_location
+  tag
+}
+
+config_git() {
+  git config --global user.email "ops@e2aproject.org"
+  git config --global user.name "Ops User"
+  git remote set-url origin https://$GH_USERNAME:$GH_TOKEN@github.com/$GH_REPO.git
+
 }
 
 build_electron() {
-  yarn --cwd /github/workspace electron:build
-  yarn --cwd /github/workspace electron:build --windows
+  yarn --cwd $WORKSPACE electron:build
+  yarn --cwd $WORKSPACE electron:build --windows
 }
 
 zip_files() {
-  zip dist_electron/mac-installer.zip dist_electron/TARP-0.1.0.dmg
-  zip -r dist_electron/windows-installer.zip dist_electron/win-ia32-unpacked
-  zip -r dist_electron/windows-installer-portable.zip dist_electron/TARP\ 0.1.0.exe
+  zip $WORKSPACE/dist_electron/mac-installer.zip $WORKSPACE/dist_electron/TARP-0.1.0.dmg
+  zip -r $WORKSPACE/dist_electron/windows-installer.zip $WORKSPACE/dist_electron/win-ia32-unpacked
+  zip -r $WORKSPACE/dist_electron/windows-installer-portable.zip $WORKSPACE/dist_electron/TARP\ 0.1.0.exe
+}
+
+tag() {
+  git add $WORKSPACE/dist_electron/mac-installer.zip $WORKSPACE/dist_electron/windows-installer.zip $WORKSPACE/dist_electron/windows-installer-portable.zip -f
+  git commit -m "CI Build Release"
+  git tag v0.2.0 -f
+  git push origin v0.2.0 -f
 }
 
 main
